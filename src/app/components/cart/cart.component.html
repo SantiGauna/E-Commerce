@@ -1,0 +1,40 @@
+<mat-card>
+  <mat-card-title>Carrito de compras</mat-card-title>
+  <mat-card-content>
+
+    <mat-list *ngIf="cartService.getItems().length > 0; else emptyCart">
+
+      <mat-list-item *ngFor="let item of cartService.getItems()">
+        {{ item.name }} - ${{ item.price }} x {{ item.quantity }}
+      </mat-list-item>
+
+      <p class="total"><strong>Total: ${{ cartService.getTotal() }}</strong></p>
+
+    </mat-list>
+
+    <ng-template #emptyCart>
+      <p>El carrito está vacío</p>
+    </ng-template>
+
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-raised-button color="accent" (click)="checkout()" [disabled]="cartService.getItems().length === 0">
+      Checkout
+    </button>
+    <button mat-raised-button color="warn" (click)="clearCart()" [disabled]="cartService.getItems().length === 0">
+      Vaciar carrito
+    </button>
+  </mat-card-actions>
+</mat-card>
+
+<!-- 
+Qué hace:
+
+Muestra los productos agregados con *ngFor.
+
+Muestra el total sumando los precios con cartService.getTotal().
+
+Botón de vaciar carrito que se desactiva si no hay productos.
+
+ng-template muestra un mensaje si el carrito está vacío. -->

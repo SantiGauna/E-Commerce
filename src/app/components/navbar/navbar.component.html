@@ -1,0 +1,8 @@
+<mat-toolbar>
+  <span class="logo">Mini E-Commerce</span>
+  <span class="spacer"></span>
+  
+  <button mat-icon-button [matBadge]="cartService.getItems().length" matBadgeColor="accent">
+    <mat-icon>shopping_cart</mat-icon>
+  </button>
+</mat-toolbar>
