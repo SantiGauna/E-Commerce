@@ -1,0 +1,24 @@
+<div class="home-container">
+  <!-- Filtro -->
+  <div class="filter-wrapper">
+    <app-filter (categoryChange)="onCategoryChange($event)"></app-filter>
+  </div>
+  <div class="products-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 mb-4">
+          <h2 class="section-title">Productos Destacados</h2>
+        </div>
+      </div>
+
+      <div class="row g-4" [@staggerAnimation]="filteredProducts.length">
+        <div
+          class="col-12 col-md-6 col-lg-4"
+          *ngFor="let product of filteredProducts; trackBy: trackByProductId"
+        >
+          <app-product-card [product]="product"></app-product-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

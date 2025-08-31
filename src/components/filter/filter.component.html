@@ -1,0 +1,9 @@
+<div class="filter-container">
+  <mat-form-field appearance="fill">
+    <mat-label>Filtrar por categoría</mat-label>
+    <mat-select [(value)]="selectedCategory" (selectionChange)="applyFilter()">
+      <mat-option value="">Todos</mat-option>
+      <mat-option *ngFor="let cat of categories" [value]="cat">{{ cat }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

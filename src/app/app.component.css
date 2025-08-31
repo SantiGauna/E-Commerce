@@ -1,30 +1,9 @@
-/* Contenedor principal */
-.main-container {
-  display: flex;
-  gap: 20px;
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
 
-/* Sección de productos */
-.product-section {
-  flex: 3;
-}
-
-/* Sección de carrito */
-.cart-section {
-  flex: 1;
-}
-
-/* Responsive para móviles */
-@media (max-width: 1024px) {
-  .main-container {
-    flex-direction: column;
-    padding: 10px;
-  }
-
-  .cart-section {
-    width: 100%;
-  }
-}
+    .main-content {
+      flex: 1;
+    }

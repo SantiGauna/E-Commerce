@@ -1,0 +1,150 @@
+<!-- cart.component.html -->
+<div class="cart-container" [@slideInOut]>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="cart-header mb-4">
+          <h1 class="cart-title">Carrito de Compras</h1>
+          <p class="cart-subtitle" *ngIf="cartService.itemCount() > 0">
+            {{ cartService.itemCount() }} artículo(s) en tu carrito
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estado de carrito vacío -->
+    <div class="row" *ngIf="cartService.itemCount() === 0" [@fadeInOut]>
+      <div class="col-12">
+        <mat-card class="empty-cart-card text-center">
+          <mat-card-content class="py-5">
+            <mat-icon class="empty-cart-icon mb-3">shopping_cart_off</mat-icon>
+            <h3 class="mb-3">Tu carrito está vacío</h3>
+            <p class="text-muted mb-4">Comienza a comprar para agregar artículos a tu carrito</p>
+            <button mat-flat-button routerLink="/" class="shop-now-btn">
+              <mat-icon class="me-2">storefront</mat-icon>
+              Comenzar a Comprar
+            </button>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+    <!-- Artículos del carrito -->
+    <div class="row" *ngIf="cartService.itemCount() > 0">
+      <div class="col-lg-8">
+        <mat-card class="cart-items-card">
+          <mat-card-header>
+            <mat-card-title>Artículos</mat-card-title>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <div 
+              class="cart-item" 
+              *ngFor="let item of cartService.cartItems(); trackBy: trackByItemId"
+              [@fadeInOut]>
+              <div class="row align-items-center">
+                <div class="col-3 col-md-2">
+                  <img 
+                    [src]="item.product.image" 
+                    [alt]="item.product.name"
+                    class="item-image">
+                </div>
+                
+                <div class="col-9 col-md-4">
+                  <h6 class="item-name">{{ item.product.name }}</h6>
+                  <p class="item-description">{{ item.product.description }}</p>
+                  <span class="item-price">${{ item.product.price }}</span>
+                </div>
+                
+                <div class="col-12 col-md-3 mt-2 mt-md-0">
+                  <div class="quantity-controls">
+                    <button 
+                      mat-icon-button 
+                      (click)="decreaseQuantity(item.product.id)"
+                      class="quantity-btn">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                    
+                    <span class="quantity-display">{{ item.quantity }}</span>
+                    
+                    <button 
+                      mat-icon-button 
+                      (click)="increaseQuantity(item.product.id)"
+                      class="quantity-btn">
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="col-8 col-md-2 mt-2 mt-md-0">
+                  <span class="item-total">${{ item.product.price * item.quantity | number:'1.0-0' }}</span>
+                </div>
+                
+                <div class="col-4 col-md-1 mt-2 mt-md-0 text-end">
+                  <button 
+                    mat-icon-button 
+                    (click)="removeItem(item.product.id)"
+                    class="remove-btn">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+              
+              <mat-divider class="my-3"></mat-divider>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Resumen del carrito -->
+      <div class="col-lg-4">
+        <mat-card class="summary-card sticky-top">
+          <mat-card-header>
+            <mat-card-title>Resumen de Pedido</mat-card-title>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span>${{ cartService.total() | number:'1.0-0' }}</span>
+            </div>
+            
+            <div class="summary-row">
+              <span>Envío</span>
+              <span class="free-shipping">Gratis</span>
+            </div>
+            
+            <div class="summary-row">
+              <span>Impuesto (8%)</span>
+              <span>${{ (cartService.total() * 0.08) | number:'1.0-0' }}</span>
+            </div>
+            
+            <mat-divider class="my-3"></mat-divider>
+            
+            <div class="summary-row total-row">
+              <span>Total</span>
+              <span>${{ (cartService.total() * 1.08) | number:'1.0-0' }}</span>
+            </div>
+          </mat-card-content>
+          
+          <mat-card-actions class="summary-actions">
+            <button 
+              mat-flat-button 
+              class="checkout-btn w-100 mb-2">
+              <mat-icon class="me-2">payment</mat-icon>
+              Proceder al Pago
+            </button>
+            
+            <button 
+              mat-stroked-button 
+              (click)="clearCart()"
+              class="clear-btn w-100">
+              <mat-icon class="me-2">clear_all</mat-icon>
+              Vaciar Carrito
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

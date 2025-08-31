@@ -1,0 +1,90 @@
+.footer {
+  background-color: #800020; /* Bordó para el fondo */
+  color: #f0e6e6; /* Texto claro */
+  margin-top: auto;
+}
+
+.footer-title {
+  font-weight: 700;
+  color: #f5f5dc; /* Beige para el título */
+  margin-bottom: 1rem;
+}
+
+.footer-subtitle {
+  font-weight: 600;
+  color: #ffffff; /* Blanco para subtítulos */
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.footer-text {
+  color: #e8c8c8; /* Bordó muy claro para texto */
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+  color: #e8c8c8; /* Bordó muy claro para enlaces */
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #f5f5dc; /* Beige al hacer hover */
+  transform: translateX(5px);
+}
+
+.social-icons {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: rgba(245, 245, 220, 0.1); /* Beige con transparencia */
+  border-radius: 50%;
+  color: #f5f5dc; /* Beige para iconos */
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  background: #f5f5dc; /* Beige sólido al hacer hover */
+  color: #800020; /* Bordó para el icono al hacer hover */
+  transform: translateY(-3px);
+}
+
+.footer-divider {
+  border-color: rgba(245, 245, 220, 0.2); /* Beige con transparencia */
+  margin: 0;
+}
+
+.copyright {
+  color: #e8c8c8; /* Bordó muy claro */
+  font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+  .social-icons {
+    justify-content: center;
+  }
+  
+  .footer-links a:hover {
+    transform: none; /* Eliminar transform en móviles */
+  }
+}

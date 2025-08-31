@@ -1,0 +1,33 @@
+<mat-card class="product-card h-100" [@fadeInOut]>
+  <div class="image-container">
+    <img 
+      mat-card-image 
+      [src]="product.image" 
+      [alt]="product.name"
+      class="product-image">
+    <div class="image-overlay">
+      <span class="category-badge">{{ product.category }}</span>
+    </div>
+  </div>
+  
+  <mat-card-content class="card-content">
+    <mat-card-title class="product-title">{{ product.name }}</mat-card-title>
+    <mat-card-subtitle class="product-description">{{ product.description }}</mat-card-subtitle>
+    
+    <div class="price-section">
+      <span class="price">${{ product.price | number:'1.0-0' }}</span>
+      <span class="price-label">ARS</span>
+    </div>
+  </mat-card-content>
+  
+  <mat-card-actions class="card-actions">
+    <button 
+      mat-flat-button 
+      (click)="addToCart()"
+      class="add-to-cart-btn w-100"
+      [@bounceIn]>
+      <mat-icon class="me-2">add_shopping_cart</mat-icon>
+      Agregar al Carrito
+    </button>
+  </mat-card-actions>
+</mat-card>

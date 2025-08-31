@@ -1,0 +1,83 @@
+
+/* Barra superior con fondo beige y sin gradiente */
+.header-toolbar {
+  background-color: var(--color-baige);
+  /* color: white;  */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 0.5rem 1rem;
+  height: auto;
+  min-height: 64px;
+}
+
+
+/* Icono del logo en bordó */
+.logo-icon {
+  font-size: 28px;
+  color: var(--color-text);
+  width: 28px;
+  height: 28px;
+}
+
+/* Nombre de la marca en bordó (sin gradiente) */
+.brand-name {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+
+/* Botones generales (nav y carrito) */
+.nav-button,
+.cart-button {
+  border-radius: 20px;
+  color: var(--color-text);
+  transition: all 0.3s ease;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding:  0 20px;
+  height: 40px;
+
+}
+
+/* Hover unificado para ambos botones */
+.nav-button:hover,
+.cart-button:hover {
+  transform: scale(1.05);
+  background: var(--color-shadow);
+  
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+  .brand-name {
+    font-size: 18px;
+  }
+  
+  .nav-button span,
+  .cart-button span {
+    display: none;
+  }
+  
+  .header-toolbar {
+    padding: 0.25rem 0.5rem;
+    min-height: 56px;
+  }
+  
+  .nav-button,
+  .cart-button {
+    height: 36px;
+    width: 36px;
+    padding: 0;
+    min-width: auto;
+  }
+  
+  .nav-button mat-icon,
+  .cart-button mat-icon {
+    margin-right: 0 !important;
+  }
+}
