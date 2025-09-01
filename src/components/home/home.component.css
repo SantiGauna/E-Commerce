@@ -99,9 +99,10 @@
       background: var(--wine-light);
       border-radius: 12px;
       transition: transform 0.25s ease, box-shadow 0.25s ease;
+      margin-bottom: 20px;
     }
 
- 
+
     .feature mat-icon {
       flex: 0 0 40px;           /* ancho fijo para que todas las tarjetas alineen */
       height: 40px;
