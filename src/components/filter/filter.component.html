@@ -1,9 +1,38 @@
 <div class="filter-container">
-  <mat-form-field appearance="fill">
-    <mat-label>Filtrar por categoría</mat-label>
-    <mat-select [(value)]="selectedCategory" (selectionChange)="applyFilter()">
-      <mat-option value="">Todos</mat-option>
-      <mat-option *ngFor="let cat of categories" [value]="cat">{{ cat }}</mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>
+      <div class="filter-header">
+        <h3>Filtros</h3>
+        <button mat-button (click)="clearFilters()" class="clear-btn">Limpiar</button>
+      </div>
+
+      <div class="filter-content">
+        <mat-form-field appearance="outline">
+          <mat-label>Tipo de vino</mat-label>
+          <mat-select [(value)]="selectedCategory" (selectionChange)="onCategoryChange()">
+            <mat-option [value]="undefined">Todos</mat-option>
+            <mat-option [value]="WineCategory.TINTO">Tinto</mat-option>
+            <mat-option [value]="WineCategory.BLANCO">Blanco</mat-option>
+            <mat-option [value]="WineCategory.ROSADO">Rosado</mat-option>
+            <mat-option [value]="WineCategory.ESPUMANTE">Espumante</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="price-filter">
+          <label class="price-label">Rango de precio: ${{minPrice}} - ${{maxPrice}}</label>
+          <mat-slider 
+            min="1000" 
+            max="5000" 
+            step="250"
+            discrete
+            [displayWith]="formatPrice">
+            <input 
+              matSliderStartThumb 
+              [(ngModel)]="minPrice"
+              (ngModelChange)="onPriceChange()">
+            <input 
+              matSliderEndThumb 
+              [(ngModel)]="maxPrice"
+              (ngModelChange)="onPriceChange()">
+          </mat-slider>
+        </div>
+      </div>
+    </div>

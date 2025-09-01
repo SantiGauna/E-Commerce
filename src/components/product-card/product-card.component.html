@@ -1,33 +1,46 @@
-<mat-card class="product-card h-100" [@fadeInOut]>
-  <div class="image-container">
-    <img 
-      mat-card-image 
-      [src]="product.image" 
-      [alt]="product.name"
-      class="product-image">
-    <div class="image-overlay">
-      <span class="category-badge">{{ product.category }}</span>
-    </div>
-  </div>
-  
-  <mat-card-content class="card-content">
-    <mat-card-title class="product-title">{{ product.name }}</mat-card-title>
-    <mat-card-subtitle class="product-description">{{ product.description }}</mat-card-subtitle>
-    
-    <div class="price-section">
-      <span class="price">${{ product.price | number:'1.0-0' }}</span>
-      <span class="price-label">ARS</span>
-    </div>
-  </mat-card-content>
-  
-  <mat-card-actions class="card-actions">
-    <button 
-      mat-flat-button 
-      (click)="addToCart()"
-      class="add-to-cart-btn w-100"
-      [@bounceIn]>
-      <mat-icon class="me-2">add_shopping_cart</mat-icon>
-      Agregar al Carrito
-    </button>
-  </mat-card-actions>
-</mat-card>
+<mat-card class="wine-card stagger-item">
+      <div class="card-image-container">
+        <img 
+          [src]="wine.image" 
+          [alt]="wine.name"
+          class="wine-image"
+          loading="lazy">
+        <div class="rating-badge">
+          <mat-icon>star</mat-icon>
+          {{wine.rating}}
+        </div>
+      </div>
+
+      <mat-card-content class="card-content">
+        <div class="wine-header">
+          <h3 class="wine-name">{{wine.name}}</h3>
+          <mat-chip class="category-chip" [ngClass]="getCategoryClass()">
+            {{getCategoryLabel()}}
+          </mat-chip>
+        </div>
+
+        <p class="vineyard">{{wine.vineyard}} • {{wine.year}}</p>
+        <p class="description">{{wine.description}}</p>
+
+        <div class="wine-details">
+          <span class="alcohol-content">
+            <mat-icon>local_bar</mat-icon>
+            {{wine.alcoholContent}}% Vol.
+          </span>
+        </div>
+
+        <div class="card-footer">
+          <div class="price-section">
+            <span class="price">${{wine.price | number:'1.0-0'}}</span>
+          </div>
+          <button 
+            mat-raised-button 
+            class="add-to-cart-btn"
+            (click)="addToCart()"
+            [disabled]="isAdding">
+            <mat-icon>add_shopping_cart</mat-icon>
+            {{isAdding ? 'Agregando...' : 'Agregar'}}
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>

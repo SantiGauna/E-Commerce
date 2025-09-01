@@ -1,33 +1,45 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProductCardComponent } from '../product-card/product-card.component';
-import { PRODUCTS } from '../../data/product';
-import { staggerAnimation } from '../../animations/animations';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { WineService } from '../../services/wine.service';
+import { SearchComponent } from '../search/search.component';
 import { FilterComponent } from '../filter/filter.component';
-import { Product } from '../../models/product.model';
+import { ProductCardComponent } from '../product-card/product-card.component';
+import { PaymentComponent } from '../payment/payment.component';
+import { Observable } from 'rxjs';
+import { Wine } from '../../models/wine.interface';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ProductCardComponent,FilterComponent],
-  animations: [staggerAnimation],
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatIconModule,
+    SearchComponent,
+    FilterComponent,
+    ProductCardComponent,
+    PaymentComponent
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  
+  private wineService = inject(WineService);
 
-products: Product[] = PRODUCTS;
-  filteredProducts: Product[] = [...PRODUCTS];
+  filteredWines$: Observable<Wine[]> = this.wineService.getFilteredWines();
 
-  trackByProductId(index: number, product: Product): number {
-    return product.id;
+  ngOnInit(): void {
+    // Inicializar con todos los vinos
+    this.wineService.updateFilters({});
   }
 
-  onCategoryChange(category: string) {
-    if (category) {
-      this.filteredProducts = this.products.filter(p => p.category === category);
-    } else {
-      this.filteredProducts = [...this.products];
+  scrollTo(elementId: string): void {
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 }

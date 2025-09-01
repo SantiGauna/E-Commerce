@@ -1,9 +1,17 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from '../components/home/home.component';
-import { CartComponent } from '../components/cart/cart.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'cart', component: CartComponent },
-  { path: '**', redirectTo: '' }
+  {
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full'
+  },
+  {
+    path: 'home',
+    loadComponent: () => import('../components/home/home.component').then(m => m.HomeComponent)
+  },
+  {
+    path: '**',
+    redirectTo: '/home'
+  }
 ];

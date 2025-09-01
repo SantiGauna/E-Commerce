@@ -1,34 +1,31 @@
-<!-- header.component.html -->
-<mat-toolbar class="header-toolbar">
-  <div class="container-fluid">
-    <div class="row align-items-center w-100">
-      
-      <!-- Logo y nombre de marca -->
-      <div class="col-4">
-        <div class="d-flex align-items-center brand-container" (click)="navigateToHome()">
-          <mat-icon class="me-2 logo-icon">liquor</mat-icon>
-          <span class="brand-name">Vinoteca</span>
-        </div>
-      </div>
-      
-      <!-- Botones de navegación -->
-      <div class="col-8">
-        <div class="d-flex justify-content-end align-items-center gap-2">
+<mat-toolbar class="wine-gradient header-toolbar">
+  <div class="container">
+    <!-- Logo a la izquierda -->
+    <div class="logo-section">
+      <mat-icon class="logo-icon">liquor</mat-icon>
+      <span class="logo-text">Vinoteca Premium</span>
+    </div>
 
-          <button mat-flat-button aria-label="Inicio" (click)="navigateToHome()" class="nav-button">
-            <mat-icon class="me-1">home</mat-icon>
-            <span class="d-none d-md-inline">Inicio</span>
-          </button>
-          
-          <button mat-flat-button aria-label="Carrito" (click)="navigateToCart()" class="cart-button" [@cartBadgeBounce]="cartService.itemCount()">
-            <mat-icon [matBadge]="cartService.itemCount()" [matBadgeHidden]="cartService.itemCount() === 0" matBadgeColor="warn" matBadgeSize="small">
-              shopping_cart
-            </mat-icon>
-            <span class="d-none d-md-inline">Carrito</span>
-          </button>
-        </div>
-      </div>
+    <!-- Menu + carrito a la derecha -->
+    <div class="right-section" style="display: flex; align-items: center; gap: 16px;">
+      <nav class="nav-menu">
+        <button mat-button (click)="scrollTo('home')" class="nav-link">Inicio</button>
+        <button mat-button (click)="scrollTo('about')" class="nav-link">Nosotros</button>
+        <button mat-button (click)="scrollTo('wines')" class="nav-link">Vinos</button>
+        <button mat-button (click)="scrollTo('contact')" class="nav-link">Contacto</button>
+      </nav>
 
+      <div class="cart-section">
+        <button 
+          mat-icon-button 
+          (click)="toggleCart()"
+          class="cart-button"
+          [matBadge]="(totalItems$ | async) || 0"
+          [matBadgeHidden]="(totalItems$ | async) === 0"
+          matBadgeColor="accent">
+          <mat-icon>shopping_cart</mat-icon>
+        </button>
+      </div>
     </div>
   </div>
 </mat-toolbar>

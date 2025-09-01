@@ -1,55 +1,62 @@
-// cart.component.ts
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatDividerModule } from '@angular/material/divider';
-import { RouterModule } from '@angular/router';
 import { CartService } from '../../services/cart.service';
-import { fadeInOut, slideInOut } from '../../animations/animations';
+import { Observable } from 'rxjs';
+import { CartItem } from '../../models/wine.interface';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
   imports: [
     CommonModule,
-    MatCardModule,
+    MatSidenavModule,
     MatButtonModule,
     MatIconModule,
-    MatDividerModule,
-    RouterModule
+    MatBadgeModule,
+    MatDividerModule
   ],
-  animations: [fadeInOut, slideInOut],
   templateUrl: './cart.component.html',
-  styleUrl: './cart.component.css'
+  styleUrls: ['./cart.component.css']  
 })
-export class CartComponent {
-  cartService = inject(CartService);
+export class CartComponent implements OnInit {
+  private cartService = inject(CartService);
 
-  trackByItemId(index: number, item: any): number {
-    return item.product.id;
+  cartItems$: Observable<CartItem[]> = this.cartService.cartItems$;
+  cartVisible$: Observable<boolean> = this.cartService.cartVisible$;
+  totalPrice$: Observable<number> = this.cartService.getTotalPrice();
+
+  ngOnInit(): void {}
+
+  closeCart(): void {
+    this.cartService.hideCart();
   }
 
-  increaseQuantity(productId: number): void {
-    const item = this.cartService.cartItems().find(item => item.product.id === productId);
-    if (item) {
-      this.cartService.updateQuantity(productId, item.quantity + 1);
+  increaseQuantity(wineId: number): void {  
+    const item = this.cartService.getCartItemsValue().find(i => i.wine.id === wineId);
+    if (item) this.cartService.updateQuantity(wineId, item.quantity + 1);
+  }
+
+  decreaseQuantity(wineId: number): void {
+    const item = this.cartService.getCartItemsValue().find(i => i.wine.id === wineId);
+    if (!item) return;
+    if (item.quantity > 1) this.cartService.updateQuantity(wineId, item.quantity - 1);
+    else this.removeItem(wineId);
+  }
+
+  removeItem(wineId: number): void {
+    this.cartService.removeFromCart(wineId);
+  }
+
+  proceedToCheckout(): void {
+    const paymentSection = document.getElementById('payment');
+    if (paymentSection) {
+      this.closeCart();
+      paymentSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  }
-
-  decreaseQuantity(productId: number): void {
-    const item = this.cartService.cartItems().find(item => item.product.id === productId);
-    if (item && item.quantity > 1) {
-      this.cartService.updateQuantity(productId, item.quantity - 1);
-    }
-  }
-
-  removeItem(productId: number): void {
-    this.cartService.removeFromCart(productId);
-  }
-
-  clearCart(): void {
-    this.cartService.clearCart();
   }
 }

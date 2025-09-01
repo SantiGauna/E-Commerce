@@ -1,59 +1,83 @@
-import { Injectable, signal, computed } from '@angular/core';
-import { CartItem, Product } from '../models/product.model';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { CartItem, Wine } from '../models/wine.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  private _cartItems = signal<CartItem[]>([]);
+  private cartItemsSubject = new BehaviorSubject<CartItem[]>([]);
+  private cartVisibleSubject = new BehaviorSubject<boolean>(false);
 
-  // Calculo los valores
-  cartItems = computed(() => this._cartItems());
-  itemCount = computed(() => this._cartItems().reduce((sum, item) => sum + item.quantity, 0));
-  total = computed(() => this._cartItems().reduce((sum, item) => sum + (item.product.price * item.quantity), 0));
+  cartItems$ = this.cartItemsSubject.asObservable();
+  cartVisible$ = this.cartVisibleSubject.asObservable();
 
-  addToCart(product: Product): void {
-    const currentItems = this._cartItems();
-    const existingItemIndex = currentItems.findIndex(item => item.product.id === product.id);
+  constructor() {}
 
-    if (existingItemIndex >= 0) {
-      // Actualizo la cantidad si el producto ya existe
-      const updatedItems = [...currentItems];
-      updatedItems[existingItemIndex] = {
-        ...updatedItems[existingItemIndex],
-        quantity: updatedItems[existingItemIndex].quantity + 1
-      };
-      this._cartItems.set(updatedItems);
+  getCartItemsValue(): CartItem[] {
+    return this.cartItemsSubject.getValue();
+  }
+
+  addToCart(wine: Wine, quantity: number = 1): void {
+    const currentItems = this.cartItemsSubject.value;
+    const existingItem = currentItems.find(item => item.wine.id === wine.id);
+
+    if (existingItem) {
+      existingItem.quantity += quantity;
     } else {
-      // Agrego el nuevo producto al carrito
-      this._cartItems.set([...currentItems, { product, quantity: 1 }]);
+      currentItems.push({ wine, quantity });
     }
+
+    this.cartItemsSubject.next([...currentItems]);
   }
 
-  // Elimino un producto del carrito
-  removeFromCart(productId: number): void {
-    const currentItems = this._cartItems();
-    this._cartItems.set(currentItems.filter(item => item.product.id !== productId));
+  removeFromCart(wineId: number): void {
+    const currentItems = this.cartItemsSubject.value;
+    const updatedItems = currentItems.filter(item => item.wine.id !== wineId);
+    this.cartItemsSubject.next(updatedItems);
   }
 
-  // Actualizo la cantidad de un producto en el carrito
-  updateQuantity(productId: number, quantity: number): void {
+  updateQuantity(wineId: number, quantity: number): void {
     if (quantity <= 0) {
-      this.removeFromCart(productId);
+      this.removeFromCart(wineId);
       return;
     }
 
-    const currentItems = this._cartItems();
-    const updatedItems = currentItems.map(item => 
-      item.product.id === productId 
-        ? { ...item, quantity }
-        : item
-    );
-    this._cartItems.set(updatedItems);
+    const currentItems = this.cartItemsSubject.value;
+    const item = currentItems.find(item => item.wine.id === wineId);
+    
+    if (item) {
+      item.quantity = quantity;
+      this.cartItemsSubject.next([...currentItems]);
+    }
   }
 
-  // Vacío el carrito
   clearCart(): void {
-    this._cartItems.set([]);
+    this.cartItemsSubject.next([]);
+  }
+
+  getTotalPrice(): Observable<number> {
+    return this.cartItems$.pipe(
+      map(items => items.reduce((total, item) => total + (item.wine.price * item.quantity), 0))
+    );
+  }
+
+  getTotalItems(): Observable<number> {
+    return this.cartItems$.pipe(
+      map(items => items.reduce((total, item) => total + item.quantity, 0))
+    );
+  }
+
+  toggleCartVisibility(): void {
+    this.cartVisibleSubject.next(!this.cartVisibleSubject.value);
+  }
+
+  showCart(): void {
+    this.cartVisibleSubject.next(true);
+  }
+
+  hideCart(): void {
+    this.cartVisibleSubject.next(false);
   }
 }
