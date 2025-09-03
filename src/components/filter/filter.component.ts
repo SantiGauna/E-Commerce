@@ -11,26 +11,25 @@ import { WineCategory } from '../../models/wine.interface';
 @Component({
   selector: 'app-filter',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatSelectModule,
-    MatFormFieldModule,
-    MatSliderModule,
-    MatButtonModule,
-    FormsModule
-  ],
+  imports: [CommonModule, MatSelectModule, MatFormFieldModule, MatSliderModule, MatButtonModule, FormsModule],
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.css'],
-
-
 })
 export class FilterComponent {
   private wineService = inject(WineService);
 
   WineCategory = WineCategory;
+
+  // 👇 sin límites por defecto (null = no filtra)
   selectedCategory: WineCategory | undefined = undefined;
-  minPrice = 1000;
-  maxPrice = 5000;
+  minPrice: number | null = null;
+  maxPrice: number | null = null;
+  searchTerm: string = '';
+
+
+  formatPrice(value: number): string {
+    return `$${value}`;
+  }
 
   onCategoryChange(): void {
     this.applyFilters();
@@ -40,23 +39,27 @@ export class FilterComponent {
     this.applyFilters();
   }
 
-  clearFilters(): void {
-    this.selectedCategory = undefined;
-    this.minPrice = 1000;
-    this.maxPrice = 5000;
-    this.wineService.updateFilters({});
+  onSearchChange(): void {
+    this.applyFilters();
   }
 
-  formatPrice(value: number): string {
-    return `$${value}`;
+  clearFilters(): void {
+    this.selectedCategory = undefined;
+    this.minPrice = null;
+    this.maxPrice = null;
+    this.searchTerm = '';
+    this.wineService.resetFilters(); // ✅ limpia todo
   }
 
   private applyFilters(): void {
-    this.wineService.updateFilters({
+    const next: any = {
       category: this.selectedCategory,
-      minPrice: this.minPrice,
-      maxPrice: this.maxPrice,
-      searchTerm: this.wineService.getCurrentFilters().searchTerm
-    });
+      searchTerm: this.searchTerm,
+    };
+    // Solo incluimos precio si el usuario lo seteó
+    if (this.minPrice != null) next.minPrice = this.minPrice;
+    if (this.maxPrice != null) next.maxPrice = this.maxPrice;
+
+    this.wineService.updateFilters(next);
   }
 }

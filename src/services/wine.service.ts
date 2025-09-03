@@ -3,24 +3,17 @@ import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { Wine, FilterOptions } from '../models/wine.interface';
 import { WINES_DATA } from '../data/wine.data';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class WineService {
   private winesSubject = new BehaviorSubject<Wine[]>(WINES_DATA);
-  private filtersSubject = new BehaviorSubject<FilterOptions>({});
+  private filtersSubject = new BehaviorSubject<FilterOptions>({}); // sin límites por defecto
 
   wines$ = this.winesSubject.asObservable();
   filters$ = this.filtersSubject.asObservable();
 
-  filteredWines$: Observable<Wine[]> = combineLatest([
-    this.wines$,
-    this.filters$
-  ]).pipe(
+  filteredWines$: Observable<Wine[]> = combineLatest([this.wines$, this.filters$]).pipe(
     map(([wines, filters]) => this.applyFilters(wines, filters))
   );
-
-  constructor() {}
 
   getAllWines(): Observable<Wine[]> {
     return this.wines$;
@@ -30,8 +23,14 @@ export class WineService {
     return this.filteredWines$;
   }
 
+  // 🔧 Fusiona con lo que ya hay (no pisa campos que no mandes)
   updateFilters(filters: FilterOptions): void {
-    this.filtersSubject.next(filters);
+    this.filtersSubject.next({ ...this.filtersSubject.value, ...filters });
+  }
+
+  // útil para “Limpiar”
+  resetFilters(): void {
+    this.filtersSubject.next({});
   }
 
   getCurrentFilters(): FilterOptions {
@@ -44,23 +43,20 @@ export class WineService {
 
   private applyFilters(wines: Wine[], filters: FilterOptions): Wine[] {
     return wines.filter(wine => {
-      if (filters.category && wine.category !== filters.category) {
-        return false;
-      }
+      // categoría
+      if (filters.category && wine.category !== filters.category) return false;
 
-      if (filters.minPrice && wine.price < filters.minPrice) {
-        return false;
-      }
+      // precio: solo filtra si viene un número (0 es válido)
+      if (filters.minPrice != null && wine.price < filters.minPrice) return false;
+      if (filters.maxPrice != null && wine.price > filters.maxPrice) return false;
 
-      if (filters.maxPrice && wine.price > filters.maxPrice) {
-        return false;
-      }
-
+      // búsqueda texto
       if (filters.searchTerm) {
-        const searchLower = filters.searchTerm.toLowerCase();
-        return wine.name.toLowerCase().includes(searchLower) ||
-               wine.description.toLowerCase().includes(searchLower) ||
-               wine.vineyard.toLowerCase().includes(searchLower);
+        const q = filters.searchTerm.toLowerCase();
+        const inName = wine.name.toLowerCase().includes(q);
+        const inDescription = wine.description.toLowerCase().includes(q);
+        const inVineyard = wine.vineyard.toLowerCase().includes(q);
+        if (!(inName || inDescription || inVineyard)) return false;
       }
 
       return true;

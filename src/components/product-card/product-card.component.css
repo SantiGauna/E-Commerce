@@ -31,18 +31,23 @@
       right: 12px;
       background: rgba(0, 0, 0, 0.8);
       color: white;
-      padding: 4px 8px;
-      border-radius: 20px;
       display: flex;
-      align-items: center;
-      gap: 4px;
       font-size: 12px;
       font-weight: 600;
+      justify-content: center;
+
+      display: inline-flex;       /* como un chip */
+      align-items: center;        /* centra verticalmente */
+      padding: 5px 10px;           /* espacio interno */
+      border-radius: 12px;        /* bordes redondeados */
     }
 
     .rating-badge mat-icon {
       font-size: 16px;
       color: var(--wine-secondary);
+      display: flex;
+      align-items: center;
+
     }
 
     .card-content {
@@ -73,12 +78,22 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+
+      display: inline-flex;       /* como un chip */
+      align-items: center;        /* centra verticalmente */
+      justify-content: center;    /* centra horizontalmente */
+      padding: 5px 10px;           /* espacio interno */
+      border-radius: 12px;        /* bordes redondeados */
+
     }
 
+
     .category-tinto {
-      background-color: #8B1538 !important;
-      color: rgb(255, 255, 255) !important;
+          background-color: #8B1538 !important;
+          color: rgb(255, 255, 255) !important;
     }
+
+
 
     .category-blanco {
       background-color: #F7E98E !important;
@@ -91,7 +106,7 @@
     }
 
     .category-espumante {
-      background-color: #E6E6FA !important;
+      background-color: #F7E7CE !important;
       color: #333 !important;
     }
 
@@ -110,10 +125,11 @@
       margin-bottom: 16px;
     }
 
-    .wine-details {
+    .wine-details  {
       display: flex;
       align-items: center;
       margin-bottom: 20px;
+
     }
 
     .alcohol-content {
@@ -179,3 +195,5 @@
         font-size: 13px;
       }
     }
+
+

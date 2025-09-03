@@ -28,8 +28,8 @@ export const WINES_DATA: Wine[] = [
   {
     id: 3,
     name: 'Malbec Gran Reserva',
-    price: 3200,
-    image: 'https://images.pexels.com/photos/357742/pexels-photo-357742.jpeg',
+    price: 68500,
+    image: 'assets/img/vinos/malbec_gran_reserva.jpg',
     description: 'Malbec intenso con aromas de frutas negras y especias, ideal para ocasiones especiales.',
     category: WineCategory.TINTO,
     vineyard: 'Bodega Catena Zapata',
@@ -52,8 +52,8 @@ export const WINES_DATA: Wine[] = [
   {
     id: 5,
     name: 'Champagne Brut',
-    price: 4500,
-    image: 'https://images.pexels.com/photos/1375261/pexels-photo-1375261.jpeg',
+    price: 170000,
+    image: 'assets/img/vinos/champagne_brut.jpg',
     description: 'Champagne elegante con burbujas finas y notas de manzana verde y brioche.',
     category: WineCategory.ESPUMANTE,
     vineyard: 'Moët & Chandon',
@@ -112,8 +112,8 @@ export const WINES_DATA: Wine[] = [
   {
     id: 10,
     name: 'Rosé Sparkling',
-    price: 2200,
-    image: 'https://images.pexels.com/photos/1796178/pexels-photo-1796178.jpeg',
+    price: 15610,
+    image: 'assets/img/vinos/rose_sparkling.jpg',
     description: 'Espumante rosado con notas de fresas y frambuesas, elegante y festivo.',
     category: WineCategory.ESPUMANTE,
     vineyard: 'Dom Pérignon',

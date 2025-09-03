@@ -1,22 +1,27 @@
 <mat-card class="wine-card stagger-item">
       <div class="card-image-container">
-        <img 
-          [src]="wine.image" 
+        <img
+          [src]="wine.image"
           [alt]="wine.name"
           class="wine-image"
           loading="lazy">
+
         <div class="rating-badge">
           <mat-icon>star</mat-icon>
           {{wine.rating}}
         </div>
+
       </div>
 
       <mat-card-content class="card-content">
         <div class="wine-header">
           <h3 class="wine-name">{{wine.name}}</h3>
-          <mat-chip class="category-chip" [ngClass]="getCategoryClass()">
+          <div class = "category-chip" [ngClass]="getCategoryClass()">
             {{getCategoryLabel()}}
-          </mat-chip>
+          </div>
+          <!-- <mat-chip class="category-chip" [ngClass]="getCategoryClass()">
+            {{getCategoryLabel()}}
+          </mat-chip> -->
         </div>
 
         <p class="vineyard">{{wine.vineyard}} • {{wine.year}}</p>
@@ -31,10 +36,10 @@
 
         <div class="card-footer">
           <div class="price-section">
-            <span class="price">${{wine.price | number:'1.0-0'}}</span>
+            <span class="price">${{getFormattedPrice()}}</span>
           </div>
-          <button 
-            mat-raised-button 
+          <button
+            mat-raised-button
             class="add-to-cart-btn"
             (click)="addToCart()"
             [disabled]="isAdding">

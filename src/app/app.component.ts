@@ -4,12 +4,13 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { HeaderComponent } from '../components/header/header.component';
 import { FooterComponent } from '../components/footer/footer.component';
-import { HomeComponent } from '../components/home/home.component';
+import { HomeComponent } from './pages/home/home.component';
 import { CartComponent } from '../components/cart/cart.component';
 import { NotificationsComponent } from '../components/notification/notifications.component';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatDrawerContainer } from "@angular/material/sidenav";
+import {RouterOutlet} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -18,10 +19,11 @@ import { MatDrawerContainer } from "@angular/material/sidenav";
     CommonModule,
     HeaderComponent,
     FooterComponent,
-    HomeComponent,
+    // HomeComponent,
     CartComponent,
     NotificationsComponent,
-    MatDrawerContainer
+    MatDrawerContainer,
+    RouterOutlet
 ],
  templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']

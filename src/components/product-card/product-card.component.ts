@@ -1,5 +1,5 @@
 import { Component, Input, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,19 +19,21 @@ import { NotificationService } from '../../services/notificacion.service';
     MatChipsModule
   ],
   templateUrl: './product-card.component.html',
-  styleUrls: ['./product-card.component.css']
+  styleUrls: ['./product-card.component.css'],
+  providers:[DecimalPipe]
 })
 export class ProductCardComponent {
   @Input() wine!: Wine;
 
   private cartService = inject(CartService);
   private notificationService = inject(NotificationService);
+  private decimalPipe =  inject(DecimalPipe);
 
   isAdding = false;
 
   addToCart(): void {
     this.isAdding = true;
-    
+
     setTimeout(() => {
       this.cartService.addToCart(this.wine);
       this.notificationService.success(`${this.wine.name} agregado al carrito`);
@@ -52,4 +54,13 @@ export class ProductCardComponent {
       default: return this.wine.category;
     }
   }
+
+    getFormattedPrice(): string {
+      // Si transform devuelve null, usamos cadena vacía ''
+      const formatted = this.decimalPipe.transform(this.wine.price, '1.0-0', 'en-US') ?? '';
+      return formatted.replace(/,/g, '.');
+    }
+
+
+
 }

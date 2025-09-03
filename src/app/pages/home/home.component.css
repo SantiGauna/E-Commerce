@@ -266,3 +266,11 @@
         font-size: 2rem;
       }
     }
+
+
+.ver-all-btn {
+  display: flex;
+  justify-content: center; /* centra el botón horizontalmente */
+  margin: 40px 0 0 0;       /* margen superior, elimina el margin-left */
+  grid-column: 1 / -1;      /* si está dentro de un grid, ocupa toda la fila */
+}
